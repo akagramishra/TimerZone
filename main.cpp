@@ -13,7 +13,7 @@ SetConfigFlags(FLAG_MSAA_4X_HINT|FLAG_WINDOW_RESIZABLE) ;
     int WINDOW_WIDTH = 1200;
     int WINDOW_HEIGHT = 800;
     
-InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Monetrafy-WINDOWS TIMER");
+InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "TIMERZONE");
 InitAudioDevice();
 SetWindowMinSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 SetTargetFPS(45);
@@ -52,8 +52,22 @@ while(!WindowShouldClose())
     int minute = ((int)timer.timeleft % 3600) / 60;
     int second = (int)timer.timeleft % 60;
 
+    //Progress Bar
+    
+    float totalTime = (timer.hours * 3600) + (timer.minutes * 60) + timer.seconds;
+    float progress = 1.0f - (timer.timeleft / totalTime);
+
+    float barX = boxX + 20;
+    float barY = boxY + boxH - 30;
+    float barW = boxW - 40;
+    float barH = 10;
+
     char timeText[20];
+if (timer.isRunning || timer.isPaused) {
     sprintf(timeText, "%02d:%02d:%02d", hour, minute, second);
+} else {
+    sprintf(timeText, "%02d:%02d:%02d", timer.hours, timer.minutes, timer.seconds);
+}
 
     Rectangle Button_ONE = {boxX, boxY + boxH + 20, boxW * 0.3f, 50};
     Rectangle Button_TWO = {boxX + boxW * 0.35f, boxY + boxH + 20, boxW * 0.3f, 50};
@@ -71,25 +85,27 @@ while(!WindowShouldClose())
         PlaySound(Strt_Sound);
     }
 
-     if(CheckCollisionPointRec(GetMousePosition(), Button_TWO) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-    {
-        timer.isRunning = !timer.isRunning;
-        timer.isPaused = !timer.isPaused;
-        BUTTON_SCD_CLR.a = 120;
-        PlaySound(Strt_Sound);
+   if (CheckCollisionPointRec(GetMousePosition(), Button_TWO) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+    if (timer.isRunning) {
+        timer.isRunning = false;
+        timer.isPaused = true;
+    } else if (timer.isPaused) {
+        timer.isRunning = true;
+        timer.isPaused = false;
     }
+    PlaySound(Strt_Sound);
+}
 
      if(CheckCollisionPointRec(GetMousePosition(), Button_THREE) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
-        timer.isRunning = false;
-        timer.timeleft = 0;
-        BUTTON_TRD_CLR.a = 120;
+        ResetTimer(timer);
         PlaySound(End_Sound);
     }
 
-
+    HandleInput(timer);
 
     UpdateTimer(timer);
+    
 
     //<----Draw HERE INIT----->
     BeginDrawing();
@@ -104,11 +120,20 @@ while(!WindowShouldClose())
 
 
     //Timer otpt
-    Vector2 textsize = MeasureTextEx(Title_FONT ,timeText, 60,3);
-    DrawTextEx(Title_FONT, timeText, {(GetScreenWidth() - textsize.x) / 2, boxY + boxH / 2 - 30}, 60, 3, WHITE);
+    Vector2 textsize = MeasureTextEx(Default_FONT ,timeText, 120,3);
+    Vector2 timer_pos = {boxX+(boxW/4), boxY + boxH/4};
+    DrawTextEx(Default_FONT, timeText, timer_pos, 60, 7, WHITE);
 
 
-    //Progress bar
+
+    // Background
+    DrawRectangleRounded({barX, barY, barW, barH}, 0.5f, 10, DARKGRAY);
+
+    // Progress
+    DrawRectangleRounded({barX, barY, barW * progress, barH}, 0.5f, 10, GREEN);
+
+
+    //Button Bar
     DrawRectangleRoundedLines(timer_Progress,0.4f, 20, TIMER_BOX_CLR);
 
 

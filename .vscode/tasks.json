@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-raylib",
+      "type": "shell",
+      "command": "C:/raylib/w64devkit/bin/g++.exe",
+      "args": [
+        "main.cpp",
+        "-o",
+        "game.exe",
+        "-IC:/raylib/w64devkit/x86_64-w64-mingw32/include",
+        "-LC:/raylib/w64devkit/x86_64-w64-mingw32/lib",
+        "-lraylib",
+        "-lopengl32",
+        "-lgdi32",
+        "-lwinmm"
+      ],
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}

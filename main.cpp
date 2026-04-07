@@ -2,7 +2,10 @@
 #include<deque>
 #include<cstdio>
 
+#define RAYGUI_IMPLEMENTATION
+#include "Res/includes/raygui.h"
 #include "timer.hpp"
+#include "todo.hpp"
 
 
 int main()
@@ -38,6 +41,8 @@ Color Action_Buttons[] = {BUTTON_ONE_CLR, BUTTON_SCD_CLR, BUTTON_TRD_CLR};
 
 POMODORO_TIMER timer;
 
+TODO_LIST todo;
+
 while(!WindowShouldClose())
 {
     //<----UPDATE THINGS HERE------->
@@ -46,6 +51,11 @@ while(!WindowShouldClose())
     float boxH = GetScreenHeight() * 0.4f;
     float boxX = (GetScreenWidth() - boxW) / 4;
     float boxY = (GetScreenHeight() - boxH) / 4;
+
+    //TODO List conts
+    float todoX = boxX;
+    float todoY = boxY + boxH + 100;  // below buttons
+    float todoW = boxW;
 
     //Timer conts
     int hour = (int)timer.timeleft / 3600;
@@ -100,6 +110,11 @@ if (timer.isRunning || timer.isPaused) {
     {
         ResetTimer(timer);
         PlaySound(End_Sound);
+    }
+
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+    Vector2 mouse = GetMousePosition();
+    todo.typing = CheckCollisionPointRec(mouse, {todoX, todoY, todoW, 40});
     }
 
     HandleInput(timer);
@@ -157,6 +172,23 @@ if (timer.isRunning || timer.isPaused) {
     int t3W = MeasureText(">> SKIP", 30);
     DrawText(">> RESET", Button_THREE.x + (Button_THREE.width - t3W) / 2, Button_THREE.y + (Button_THREE.height - 30) / 2, 30, BLACK);
 
+
+    //Todolist
+    // Input box
+GuiTextBox({todoX, todoY, todoW, 40}, todo.input, 255, todo.typing);
+
+// Add button
+if (GuiButton({todoX + todoW + 10, todoY, 80, 40}, "ADD")) {
+    todo.typing = true;
+    AddTask(todo);
+}
+
+// Draw each task with a checkbox
+for (int i = 0; i < todo.items.size(); i++) {
+    GuiCheckBox({todoX, todoY + 50 + i * 35, 20, 20}, 
+                todo.items[i].text.c_str(), 
+                &todo.items[i].completed);
+}
 
 
     EndDrawing();

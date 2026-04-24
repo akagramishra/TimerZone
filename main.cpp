@@ -40,8 +40,7 @@ Color Action_Buttons[] = {BUTTON_ONE_CLR, BUTTON_SCD_CLR, BUTTON_TRD_CLR};
 
 
 POMODORO_TIMER timer;
-
-TODO_LIST todo;
+TODO_TSK todo;
 
 while(!WindowShouldClose())
 {
@@ -73,6 +72,7 @@ while(!WindowShouldClose())
     float barH = 10;
 
     char timeText[20];
+    char inputText_TODO[256];
 if (timer.isRunning || timer.isPaused) {
     sprintf(timeText, "%02d:%02d:%02d", hour, minute, second);
 } else {
@@ -112,11 +112,17 @@ if (timer.isRunning || timer.isPaused) {
         PlaySound(End_Sound);
     }
 
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-    Vector2 mouse = GetMousePosition();
-    todo.typing = CheckCollisionPointRec(mouse, {todoX, todoY, todoW, 40});
-    }
 
+    if (IsKeyPressed(KEY_ENTER) && todo.typing) {
+    AddTask(todo);
+}
+
+// Click to focus input
+if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+    todo.typing = CheckCollisionPointRec(GetMousePosition(), {todoX, todoY + 40, todoW - 90, 40});
+}
+
+     HandleInput(todo);
     HandleInput(timer);
 
     UpdateTimer(timer);
@@ -174,21 +180,36 @@ if (timer.isRunning || timer.isPaused) {
 
 
     //Todolist
-    // Input box
-GuiTextBox({todoX, todoY, todoW, 40}, todo.input, 255, todo.typing);
+    // Todo section title
+DrawTextEx(Title_FONT, "TODO LIST", {todoX, todoY}, 30, 3, WHITE);
+
+// Input box + Add button
+GuiSetStyle(TEXTBOX, TEXT_COLOR_NORMAL, ColorToInt(WHITE));
+GuiSetStyle(DEFAULT, BASE_COLOR_NORMAL, ColorToInt(TIMER_BOX_CLR));
+GuiSetStyle(DEFAULT, BORDER_COLOR_NORMAL, ColorToInt(TIMER_BOX_CLR));
+
+if (GuiTextBox({todoX, todoY + 40, todoW - 90, 40}, todo.input, 255, todo.typing)) {
+    todo.typing = !todo.typing;
+}
 
 // Add button
-if (GuiButton({todoX + todoW + 10, todoY, 80, 40}, "ADD")) {
-    todo.typing = true;
+GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt({0, 228, 48, 255}));
+GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));
+if (GuiButton({todoX + todoW - 80, todoY + 40, 80, 40}, "ADD")) {
     AddTask(todo);
 }
 
-// Draw each task with a checkbox
-for (int i = 0; i < todo.items.size(); i++) {
-    GuiCheckBox({todoX, todoY + 50 + i * 35, 20, 20}, 
+// Todo items with checkboxes
+for (size_t i = 0; i < todo.items.size(); i++) {
+    Color textClr = todo.items[i].completed ? GRAY : WHITE;
+    GuiCheckBox({todoX, todoY + 95 + (float)(i * 35), 20, 20}, 
                 todo.items[i].text.c_str(), 
                 &todo.items[i].completed);
 }
+
+// Enter key to add
+
+    
 
 
     EndDrawing();

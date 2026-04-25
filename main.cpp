@@ -116,7 +116,7 @@ if (timer.isRunning || timer.isPaused) {
 
     if (IsKeyPressed(KEY_ENTER) && todo.typing) {
     AddTask(todo);
-}
+    }
 
 // Click to focus input
 if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -189,7 +189,7 @@ GuiSetStyle(TEXTBOX, TEXT_COLOR_NORMAL, ColorToInt(WHITE));
 GuiSetStyle(DEFAULT, BASE_COLOR_NORMAL, ColorToInt(TIMER_BOX_CLR));
 GuiSetStyle(DEFAULT, BORDER_COLOR_NORMAL, ColorToInt(TIMER_BOX_CLR));
 
-if (GuiTextBox({todoX, todoY + 40, todoW - 90, 40}, todo.input, 255, todo.typing)) {
+if (GuiTextBox({todoX, todoY + 40, todoW - 90, 40}, todo.input, 256, todo.typing)) {
     todo.typing = !todo.typing;
 }
 

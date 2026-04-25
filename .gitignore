@@ -1,2 +1,3 @@
-ignore .vscode/
-ignore main.exe
+.vscode/
+main.exe
+

@@ -3,7 +3,7 @@
 #include<cstring>
 
 #define RAYGUI_IMPLEMENTATION
-#include "Res/includes/raygui.h"
+#include "Res/includes/raygui.hpp"
 #include "timer.hpp"
 #include "todo.hpp"
 

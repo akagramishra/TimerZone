@@ -36,7 +36,7 @@ void HandleInput(TODO_TSK &todotask){
             }
             key = GetCharPressed();
         }
-        if (IsKeyPressed(KEY_BACKSPACE)&& todotask.inputLen > 0) {
+        if (IsKeyPressed(KEY_BACKSPACE) || IsKeyDown(KEY_BACKSPACE) && todotask.inputLen > 0) {
             todotask.input[--todotask.inputLen] = '\0';
         }
     

@@ -1,6 +1,6 @@
 #include<raylib.h>
 #include<deque>
-#include<cstdio>
+#include<cstring>
 
 #define RAYGUI_IMPLEMENTATION
 #include "Res/includes/raygui.h"
@@ -10,6 +10,7 @@
 
 int main()
 {
+
     
 
 SetConfigFlags(FLAG_MSAA_4X_HINT|FLAG_WINDOW_RESIZABLE) ;
@@ -206,8 +207,6 @@ for (size_t i = 0; i < todo.items.size(); i++) {
                 todo.items[i].text.c_str(), 
                 &todo.items[i].completed);
 }
-
-// Enter key to add
 
     
 

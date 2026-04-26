@@ -6,9 +6,9 @@
 
 #define RAYGUI_IMPLEMENTATION
 #include "Res/includes/raygui.hpp"
-#include "timer.hpp"
-#include "todo.hpp"
-#include "network.hpp"
+#include "src/timer.hpp"
+#include "src/todo.hpp"
+#include "src/network.hpp"
 //#include "bg.hpp"
 
 

@@ -5,15 +5,21 @@
 #include <string>
 #include "todo.hpp"
 #include "network.hpp"
-#include "Res/includes/json.hpp"
+#include "../Res/includes/json.hpp"
 using json = nlohmann::json;
 
+static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
+    output->append((char*)contents, size * nmemb);
+    return size * nmemb;
+}
 
-void SaveTodoToServer(const char *text)
+
+std::string SaveTodoToServer(const char *text)
 {
     CURL* curl = curl_easy_init();
-    if (!curl) return;
+    if (!curl) return "";
 
+    std::string response;
     std::string url = "http://localhost:5000/todos";
     std::string data = std::string("{\"text\":\"") + text + "\",\"completed\":false}";
 
@@ -21,9 +27,14 @@ void SaveTodoToServer(const char *text)
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
     curl_easy_perform(curl);
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
+
+    json res = json::parse(response);
+    return res["id"].get<std::string>();
 }
 
 void LoadTodosFromServer(TODO_TSK& todo) {

@@ -28,10 +28,7 @@ struct TODO_TSK
 
 
 
-static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
-    output->append((char*)contents, size * nmemb);
-    return size * nmemb;
-}
+
 
 //inline does not allow multiple definitions across translation units, so we can define these functions in the header without linker errors.
 
@@ -60,8 +57,8 @@ inline void HandleInput(TODO_TSK &todotask){
 inline void AddTask(TODO_TSK &todotask){
     if(todotask.inputLen >0){
         TODO_ITEM newItem;
-        todotask.typing = false;
         newItem.text = std::string(todotask.input);
+        newItem.id = SaveTodoToServer(newItem.text.c_str());  // save to server and get unique ID
         todotask.items.push_back(newItem);
         SaveTodoToServer(newItem.text.c_str());  // save to Firebase
         memset(todotask.input, 0, 256);

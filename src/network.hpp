@@ -3,7 +3,7 @@
 
 struct TODO_TSK;
 
-void SaveTodoToServer(const char* text);
+std::string SaveTodoToServer(const char* text);
 
 void LoadTodosFromServer(TODO_TSK &todo);
 

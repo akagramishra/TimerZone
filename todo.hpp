@@ -6,12 +6,16 @@
 #include<string>
 #include<raylib.h>
 #include<vector>
+#include "network.hpp"
+
 
 
 struct TODO_ITEM
 {
     std::string text;
+    std::string id; // unique identifier for server operations from firebase
     bool completed =false;
+
 };
 
 struct TODO_TSK
@@ -23,7 +27,16 @@ struct TODO_TSK
 };
 
 
-void HandleInput(TODO_TSK &todotask){
+
+static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
+    output->append((char*)contents, size * nmemb);
+    return size * nmemb;
+}
+
+//inline does not allow multiple definitions across translation units, so we can define these functions in the header without linker errors.
+
+
+inline void HandleInput(TODO_TSK &todotask){
     if(todotask.typing){
         int key = GetCharPressed();
         while(key>0){
@@ -44,17 +57,27 @@ void HandleInput(TODO_TSK &todotask){
 }
 
 
-void AddTask(TODO_TSK &todotask){
+inline void AddTask(TODO_TSK &todotask){
     if(todotask.inputLen >0){
         TODO_ITEM newItem;
         todotask.typing = false;
         newItem.text = std::string(todotask.input);
         todotask.items.push_back(newItem);
-        todotask.input[0] = '\0';
+        SaveTodoToServer(newItem.text.c_str());  // save to Firebase
+        memset(todotask.input, 0, 256);
         todotask.inputLen = 0;
+        todotask.typing = false;
         
     }
 }
+
+inline void DeleteTask(TODO_TSK& todo, int index) {
+    if (index >= 0 && index < todo.items.size()) {
+        DeleteTodoFromServer(todo.items[index].id);
+        todo.items.erase(todo.items.begin() + index);
+    }
+}
+
 
 
 

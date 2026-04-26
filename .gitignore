@@ -2,4 +2,7 @@
 main.exe
 deps/
 
+ServiceAccount.json
+.env
+
 .md

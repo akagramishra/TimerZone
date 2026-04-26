@@ -1,16 +1,20 @@
+
 #include<raylib.h>
 #include<deque>
 #include<cstring>
+
 
 #define RAYGUI_IMPLEMENTATION
 #include "Res/includes/raygui.hpp"
 #include "timer.hpp"
 #include "todo.hpp"
+#include "network.hpp"
+//#include "bg.hpp"
 
 
 int main()
 {
-
+   
     
 
 SetConfigFlags(FLAG_MSAA_4X_HINT|FLAG_WINDOW_RESIZABLE) ;
@@ -18,6 +22,8 @@ SetConfigFlags(FLAG_MSAA_4X_HINT|FLAG_WINDOW_RESIZABLE) ;
     int WINDOW_HEIGHT = 800;
     
 InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "TIMERZONE");
+Image icon = LoadImage("Res/images/icon.png");
+SetWindowIcon(icon);
 InitAudioDevice();
 SetWindowMinSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 SetTargetFPS(45);
@@ -43,6 +49,7 @@ Color Action_Buttons[] = {BUTTON_ONE_CLR, BUTTON_SCD_CLR, BUTTON_TRD_CLR};
 POMODORO_TIMER timer;
 TODO_TSK todo;
 
+LoadTodosFromServer(todo);
 while(!WindowShouldClose())
 {
     //<----UPDATE THINGS HERE------->
@@ -208,6 +215,19 @@ for (size_t i = 0; i < todo.items.size(); i++) {
                 &todo.items[i].completed);
 }
 
+for (size_t i = 0; i < todo.items.size(); i++) {
+    Color textClr = todo.items[i].completed ? GRAY : WHITE;
+    GuiCheckBox({todoX, todoY + 95 + (float)(i * 35), 20, 20},
+                todo.items[i].text.c_str(),
+                &todo.items[i].completed);
+
+    // Delete button
+    if (GuiButton({todoX + todoW - 30, todoY + 95 + (float)(i * 35), 25, 25}, "X")) {
+        DeleteTask(todo, i);
+        break;  // break to avoid iterator issues after erase
+    }
+}
+
     
 
 
@@ -218,6 +238,7 @@ for (size_t i = 0; i < todo.items.size(); i++) {
 UnloadFont(Title_FONT);
 UnloadSound(Strt_Sound);
 UnloadSound(End_Sound);
+UnloadImage(icon);
 
 CloseWindow();
 

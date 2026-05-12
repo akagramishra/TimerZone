@@ -21,14 +21,14 @@ struct POMODORO_TIMER
 };
 
 
-void StartTimer(POMODORO_TIMER &timer)
+inline void StartTimer(POMODORO_TIMER &timer)
 {
     timer.isRunning = true;
     timer.isPaused = false;
     timer.timeleft = timer.hours * 3600 + timer.minutes * 60 + timer.seconds;
 }
 
-void UpdateTimer(POMODORO_TIMER &timer)
+inline void UpdateTimer(POMODORO_TIMER &timer)
 {
 
     if(timer.isRunning && timer.timeleft>0){
@@ -43,7 +43,7 @@ void UpdateTimer(POMODORO_TIMER &timer)
 }
 
 
-void HandleInput(POMODORO_TIMER &timer) {
+inline void HandleInput(POMODORO_TIMER &timer) {
     int ch = GetCharPressed();
     if (ch >= '0' && ch <= '9' && !timer.isRunning && !timer.isPaused) {
         for (int i = 0; i < 5; i++)
@@ -57,7 +57,7 @@ void HandleInput(POMODORO_TIMER &timer) {
     }
 }
 
-void ResetTimer(POMODORO_TIMER &timer) {
+inline void ResetTimer(POMODORO_TIMER &timer) {
     timer.isRunning = false;
     timer.isPaused = false;
     timer.isFinished = false;

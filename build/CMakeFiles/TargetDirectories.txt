@@ -1,0 +1,3 @@
+C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/build/CMakeFiles/TimerZone.dir
+C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/build/CMakeFiles/edit_cache.dir
+C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/build/CMakeFiles/rebuild_cache.dir

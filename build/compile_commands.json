@@ -1,0 +1,26 @@
+[
+{
+  "directory": "C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/build",
+  "command": "C:/msys64/ucrt64/bin/g++.exe  @CMakeFiles/TimerZone.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles/TimerZone.dir/main.cpp.obj -c \"C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/main.cpp\"",
+  "file": "C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/main.cpp",
+  "output": "CMakeFiles/TimerZone.dir/main.cpp.obj"
+},
+{
+  "directory": "C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/build",
+  "command": "C:/msys64/ucrt64/bin/g++.exe  @CMakeFiles/TimerZone.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles/TimerZone.dir/src/network.cpp.obj -c \"C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/src/network.cpp\"",
+  "file": "C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/src/network.cpp",
+  "output": "CMakeFiles/TimerZone.dir/src/network.cpp.obj"
+},
+{
+  "directory": "C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/build",
+  "command": "C:/msys64/ucrt64/bin/g++.exe  @CMakeFiles/TimerZone.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles/TimerZone.dir/src/app.cpp.obj -c \"C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/src/app.cpp\"",
+  "file": "C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/src/app.cpp",
+  "output": "CMakeFiles/TimerZone.dir/src/app.cpp.obj"
+},
+{
+  "directory": "C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/build",
+  "command": "C:/msys64/ucrt64/bin/g++.exe  @CMakeFiles/TimerZone.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles/TimerZone.dir/src/ui.cpp.obj -c \"C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/src/ui.cpp\"",
+  "file": "C:/Users/Akagra Mishra/Desktop/Coding/GUI_NEW/src/ui.cpp",
+  "output": "CMakeFiles/TimerZone.dir/src/ui.cpp.obj"
+}
+]

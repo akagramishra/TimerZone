@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\TimerZone.dir/objects.a
+C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\TimerZone.dir/objects.a @CMakeFiles\TimerZone.dir\objects1.rsp
+C:\msys64\ucrt64\bin\c++.exe -mwindows -Wl,--whole-archive CMakeFiles\TimerZone.dir/objects.a -Wl,--no-whole-archive -o TimerZone.exe -Wl,--out-implib,libTimerZone.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\TimerZone.dir\linkLibs.rsp

@@ -19,7 +19,7 @@ A lightweight timer application built with C++.
 ### Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/akagramishra/TimerZone.git
 cd TimerZone
 ```
 

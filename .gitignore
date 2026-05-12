@@ -1,6 +1,7 @@
 .vscode/
 *.exe
 deps/
+build/
 
 ServiceAccount.json
 .env

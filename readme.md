@@ -1,6 +1,8 @@
 
 # Open Source Timer
 
+![Feature Image](Res/images/SS.png)
+
 A lightweight timer application built with C++.
 
 ## Features

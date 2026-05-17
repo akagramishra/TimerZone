@@ -28,8 +28,12 @@ void Application::RunLoop() {
 }
 
 void Application::Update() {
-  HandleInput(todo);
-  HandleInput(timer);
+
+  //don't use this function it doesnt help
+  // HandleInput(todo);
+  
+  
+  HandleInput(timer,todo);
   UpdateTimer(timer);
 }
 

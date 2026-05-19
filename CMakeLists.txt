@@ -3,8 +3,8 @@ project(TimerZone VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(BUILD_SHARED_LIBS OFF)
 
-# Source files
 set(SOURCES
     main.cpp
     src/network.cpp
@@ -12,34 +12,57 @@ set(SOURCES
     src/ui.cpp
 )
 
-# Create executable
-# The WIN32 flag prevents a console window from popping up on Windows
 add_executable(${PROJECT_NAME} WIN32 ${SOURCES})
 
-# Include directories
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    CURL_STATICLIB
+)
+
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}
     "C:/raylib/raylib/src"
+    "C:/msys64/ucrt64/include"
 )
 
-# Library directories
 target_link_directories(${PROJECT_NAME} PRIVATE
     "C:/raylib/raylib/src"
+    "C:/msys64/ucrt64/lib"
 )
 
-# Link necessary libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE
     raylib
-    opengl32
-    gdi32
-    winmm
-    curl
+    C:/msys64/ucrt64/lib/libcurl.a
+    ssh2
+    nghttp2
+    nghttp3
+    ngtcp2
+    ngtcp2_crypto_ossl
+    brotlidec
+    brotlicommon
+    zstd
+    z
+    ssl
+    crypto
+    idn2
+    psl
+    C:/msys64/ucrt64/lib/libunistring.a
+    C:/msys64/ucrt64/lib/libiconv.a
     ws2_32
     wldap32
     crypt32
-    
+    bcrypt
+    secur32
+    mswsock
+    iphlpapi
+    opengl32
+    gdi32
+    winmm
 )
 
-# Copy the Res folder to the build directory so assets load correctly
-file(COPY ${CMAKE_SOURCE_DIR}/Res DESTINATION ${CMAKE_BINARY_DIR})
+target_link_options(${PROJECT_NAME} PRIVATE
+    -static
+    -static-libgcc
+    -static-libstdc++
+)
 
+file(COPY ${CMAKE_SOURCE_DIR}/Res DESTINATION ${CMAKE_BINARY_DIR})

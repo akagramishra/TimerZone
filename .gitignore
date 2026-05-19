@@ -8,3 +8,4 @@ ServiceAccount.json
 .env
 
 *.md
+*.zip

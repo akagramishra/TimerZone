@@ -29,8 +29,9 @@ void Application::RunLoop() {
 
 void Application::Update() {
 
-  //don't use this function it doesnt help
-  // HandleInput(todo);
+  //Use this function to add taska and updates tot he server of firebase
+  //earlier commit was lazy and did it wrong
+  HandleInput(todo);
   
   
   HandleInput(timer,todo);

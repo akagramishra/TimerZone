@@ -206,41 +206,49 @@ void DrawTodoPanel(TODO_TSK &todo, Rectangle bounds) {
 
   Rectangle headerBg = {bounds.x, bounds.y, bounds.width, 40};
   DrawRectangleRounded(headerBg, 0.05f, 10, ButtonDarkColor);
-  DrawRectangleRec({bounds.x, bounds.y + 20, bounds.width, 20},
-                   ButtonDarkColor);
+  DrawRectangleRec({bounds.x, bounds.y + 20, bounds.width, 20}, ButtonDarkColor);
   DrawText("TODAY'S LOG / TODO", bounds.x + 20, bounds.y + 12, 18, TextColor);
-
-  // Input textbox setup
-  GuiSetStyle(TEXTBOX, TEXT_COLOR_NORMAL, ColorToInt(TextColor));
-  GuiSetStyle(DEFAULT, BASE_COLOR_NORMAL, ColorToInt(ButtonDarkColor));
-  GuiSetStyle(DEFAULT, BORDER_COLOR_NORMAL, ColorToInt(TimerBorderColor));
-  GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
 
   Rectangle inputRec = {bounds.x + 20, bounds.y + 60, bounds.width - 120, 45};
 
   if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
     todo.typing = CheckCollisionPointRec(GetMousePosition(), inputRec);
   }
-  if (GuiTextBox(inputRec, todo.input, 256, todo.typing)) {
-    todo.typing = !todo.typing;
+
+  
+  DrawRectangleRounded(inputRec, 0.3f, 10, ButtonDarkColor);
+  DrawRectangleRoundedLines(inputRec, 0.3f, 10,
+      todo.typing ? SecondaryAccent : TimerBorderColor);
+
+ 
+  HandleInput(todo);//Here I am handling it only once inste4ad of callign it twice in earlier
+
+  // Draw text inside box
+  DrawText(todo.input, inputRec.x + 8, inputRec.y + 12, 20, TextColor);
+
+  //Our blinking curosor implementation is here
+  if (todo.typing && ((int)(GetTime() * 2) % 2 == 0)) {
+    char before[256] = {};
+    strncpy(before, todo.input, todo.cursorPos);
+    int cursorX = inputRec.x + 8 + MeasureText(before, 20);
+    DrawRectangle(cursorX, inputRec.y + 8, 2, 28, SecondaryAccent);
   }
 
-  bool addClicked;
+  bool addClicked = false;
   DrawModernButton({bounds.x + bounds.width - 90, bounds.y + 60, 70, 45}, "ADD",
                    ButtonDarkColor, {60, 68, 80, 255}, SecondaryAccent,
                    addClicked);
+
   if (addClicked || (IsKeyPressed(KEY_ENTER) && todo.typing)) {
     AddTask(todo);
   }
 
-  // Todo items ki list render karna
+  // Todo items rendering is here make sure to use the implemented delete function to remove the task from both UI and server when the delete button is clicked avoid the duplication
   float itemY = bounds.y + 130;
   for (size_t i = 0; i < todo.items.size(); i++) {
-    if (itemY > bounds.y + bounds.height - 50)
-      break;
+    if (itemY > bounds.y + bounds.height - 50) break;
 
     Color textClr = todo.items[i].completed ? TextMutedColor : TextColor;
-
     Rectangle checkRec = {bounds.x + 20, itemY, 26, 26};
     GuiCheckBox(checkRec, "", &todo.items[i].completed);
 
@@ -249,17 +257,15 @@ void DrawTodoPanel(TODO_TSK &todo, Rectangle bounds) {
 
     if (todo.items[i].completed) {
       int tw = MeasureText(todo.items[i].text.c_str(), 20);
-      DrawLine(bounds.x + 60, textY + 10, bounds.x + 60 + tw, textY + 10,
-               TextMutedColor);
+      DrawLine(bounds.x + 60, textY + 10, bounds.x + 60 + tw, textY + 10, TextMutedColor);
     }
 
-    bool delClicked;
+    bool delClicked = false;
     DrawModernButton({bounds.x + bounds.width - 55, itemY, 35, 26}, "X",
-                     ButtonDarkColor, {60, 68, 80, 255}, TextMutedColor,
-                     delClicked);
+                     ButtonDarkColor, {60, 68, 80, 255}, TextMutedColor, delClicked);
     if (delClicked) {
       DeleteTask(todo, i);
-      break; // break to avoid iterator issues
+      break;
     }
 
     itemY += 45;
@@ -272,4 +278,4 @@ void DrawHeader() {
   int ScreenWidth = GetScreenWidth();
   DrawText("C++ / RAYLIB POMODORO TIMER v1.0", 40, 20, 20, TextMutedColor);
 }
-} // namespace UI
+} 

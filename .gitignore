@@ -1,9 +1,10 @@
 .vscode/
 *.exe
+main.exe
 deps/
 build/
 
 ServiceAccount.json
 .env
 
-.md
+*.md

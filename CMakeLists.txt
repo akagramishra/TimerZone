@@ -37,6 +37,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ws2_32
     wldap32
     crypt32
+    
 )
 
 # Copy the Res folder to the build directory so assets load correctly

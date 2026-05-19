@@ -5,26 +5,30 @@
 
 #include "todo.hpp"
 #include <raylib.h>
+#include <iostream>
 
 struct POMODORO_TIMER
 {
     int hours = 0;
     int minutes = 25;
     int seconds = 0;
-    float timeleft = 0;
+    float timeleft = 1500;
     bool isRunning = false;
-    bool isPaused = false;
-    bool isFinished = false;
 
     char input[7] = "002500";
     int inputLen = 6;
+
 };
 
-inline void StartTimer(POMODORO_TIMER &timer)
+inline void setTime(POMODORO_TIMER &timer)
 {
-    timer.isRunning = true;
-    timer.isPaused = false;
-    timer.timeleft = timer.hours * 3600 + timer.minutes * 60 + timer.seconds;
+        timer.timeleft = timer.hours * 3600 + timer.minutes * 60 + timer.seconds;
+}
+
+inline void ResetTimer(POMODORO_TIMER &timer)
+{
+    timer.isRunning = false;
+    setTime(timer);
 }
 
 inline void UpdateTimer(POMODORO_TIMER &timer)
@@ -37,9 +41,7 @@ inline void UpdateTimer(POMODORO_TIMER &timer)
 
     if (timer.timeleft <= 0 && timer.isRunning)
     {
-        timer.isRunning = false;
-        timer.timeleft = 0;
-        timer.isFinished = true;
+        ResetTimer(timer);
     }
 }
 
@@ -48,30 +50,29 @@ inline void HandleInput(POMODORO_TIMER &timer, TODO_TSK &todo)
     if (!todo.typing)
     {
         int ch = GetCharPressed();
-        if (ch >= '0' && ch <= '9' && !timer.isRunning && !timer.isPaused)
+        if (ch >= '0' && ch <= '9' && !timer.isRunning)
         {
             for (int i = 0; i < 5; i++)
                 timer.input[i] = timer.input[i + 1];
             timer.input[5] = ch;
 
-            // OUTSIDE the loop
             timer.hours = (timer.input[0] - '0') * 10 + (timer.input[1] - '0');
             timer.minutes = (timer.input[2] - '0') * 10 + (timer.input[3] - '0');
             timer.seconds = (timer.input[4] - '0') * 10 + (timer.input[5] - '0');
+            setTime(timer);
+        }
+        if (IsKeyPressed(KEY_BACKSPACE) && !timer.isRunning)
+        {
+            for (int i = 5; i > 0; i--)
+                timer.input[i] = timer.input[i-1];
+            timer.input[0] = '0';
+
+            timer.hours = (timer.input[0] - '0') * 10 + (timer.input[1] - '0');
+            timer.minutes = (timer.input[2] - '0') * 10 + (timer.input[3] - '0');
+            timer.seconds = (timer.input[4] - '0') * 10 + (timer.input[5] - '0');
+            setTime(timer);
         }
     }
 }
 
-inline void ResetTimer(POMODORO_TIMER &timer)
-{
-    timer.isRunning = false;
-    timer.isPaused = false;
-    timer.isFinished = false;
-    timer.timeleft = 0;
-    timer.hours = 0;
-    timer.minutes = 0;
-    timer.seconds = 0;
-    for (int i = 0; i < 6; i++)
-        timer.input[i] = '0';
-}
 #endif // !TIMER_HPP
